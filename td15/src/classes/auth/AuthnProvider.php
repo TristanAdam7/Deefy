@@ -23,8 +23,11 @@ class AuthnProvider {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+        
         unset($user['passwd']);
         $_SESSION['user'] = $user;
+
+        unset($_SESSION['playlist']);
     }
 
     public static function register(string $email, string $pass): void {
