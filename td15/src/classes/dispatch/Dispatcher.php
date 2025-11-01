@@ -9,6 +9,8 @@ use iutnc\deefy\action\DisplayPlaylistAction;
 use iutnc\deefy\action\AddUserAction;
 use iutnc\deefy\action\SignInAction;
 use iutnc\deefy\action\DisplayPlaylistByIdAction;
+use iutnc\deefy\action\MesPlaylistsAction;
+use iutnc\deefy\action\SetPlaylistAction;
 
 class Dispatcher {
 
@@ -40,6 +42,14 @@ class Dispatcher {
 
             case 'signin':
                 $actionMethode = new SigninAction();
+                break;
+
+            case 'mes-playlists':
+                $actionMethode = new MesPlaylistsAction();
+                break;
+
+            case 'set-playlist':
+                $actionMethode = new SetPlaylistAction();
                 break;
 
             case 'display-playlist-by-id':
@@ -75,9 +85,11 @@ class Dispatcher {
                     <a href="?action=default">Accueil</a>
                     <a href="?action=add-playlist">Créer une playlist</a>
                     <a href="?action=add-track">Ajouter un podcast</a>
+                    <a href="?action=playlist">Afficher la Playlist en Session</a>
                     <a href="?action=add-user">Inscription</a>
                     <a href="?action=signin">Se connecter</a>
                     <a href="?action=display-playlist-by-id">Voir une playlist (par ID)</a>
+                    <a href="?action=mes-playlists">Voir mes Playlists</a>
                 </nav>
             </header>
             <main>

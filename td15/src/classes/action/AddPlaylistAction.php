@@ -2,44 +2,53 @@
 
 namespace iutnc\deefy\action;
 
-use iutnc\deefy\audio\lists\Playlist;
+use iutnc\deefy\audio\lists\PlayList;
 use iutnc\deefy\render\AudioListRenderer;
+use iutnc\deefy\render\Renderer;
 use iutnc\deefy\repository\DeefyRepository;
+use iutnc\deefy\auth\AuthnProvider;
+use iutnc\deefy\exception\AuthnException;
 
 class AddPlaylistAction extends Action {
 
+    // --- CORRECTION : Doit être public ---
     public function executeGet(): string {
-        session_start();
-
-        if (!isset($_SESSION["playlist"])) {
-            $html = '<h2>Ajouter une nouvelle piste</h2>';
-            $html .= '<form method="post" action="?action=add-playlist">';
-            $html .= '<label for="nomP"> Nom de la playlist : </label>';
-            $html .= '<input type="text" name="nomP" placeholder="Nom" required><br>';
-            $html .= '<button type="submit" name="valider">Ajouter</button></form>';
-            return $html;
-        } else {
-            return '<p> Une playlist a déjà été créée !</p><br><a href="?action=add-track">Ajouter une piste</a>';
-        }
+        return "
+        <form method=\"post\" action=\"?action=add-playlist\">
+            <label for=\"playlist_name\">Nom de la playlist :</label>
+            <input type=\"text\" id=\"playlist_name\" name=\"playlist_name\" required>
+            <button type=\"submit\">Créer la Playlist</button>
+        </form>";
     }
 
+    // --- CORRECTION : Doit être public (C'est la ligne 23) ---
     public function executePost(): string {
-        session_start();
+        $playlistN = filter_var($_POST['playlist_name'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $playlistName = filter_var($_POST['nomP'], FILTER_SANITIZE_SPECIAL_CHARS);
-        $_SESSION['playlist'] = new Playlist($playlistName);
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $playlist = new PlayList($playlistN);
 
         $repo = DeefyRepository::getInstance();
-        $repo->savePlaylist($_SESSION['playlist']);
+        $repo->savePlaylist($playlist);
 
-        $render = new AudioListRenderer($_SESSION['playlist']);
-        $playlistHtml = $render->render(1);
+        try {
+            $user = AuthnProvider::getSignedInUser();
+            $userId = (int)$user['id'];
+            $repo->linkPlaylistToUser($playlist->id, $userId);
+        } catch (AuthnException $e) {
+            
+        }
 
-        $html = "<h2>Playliste ajoutée avec succès !</h2>";
-        $html .= "<h3>Voici votre playlist :</h3>";
-        $html .= $playlistHtml;
+        $_SESSION['playlist'] = $playlist;
 
-        $html .= '<a href="?action=add-track">Ajouter une piste</a>';
+        $renderer = new AudioListRenderer($playlist);
+        $html = "<h2>Playlist '{$playlist->nom}' créée avec succès (ID: {$playlist->id})</h2>"; 
+        $html .= $renderer->render(Renderer::COMPACT);
+        $html .= '<p><a href="?action=add-track">Ajouter une piste</a></p>';
+
         return $html;
     }
 }

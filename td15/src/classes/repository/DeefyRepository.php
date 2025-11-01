@@ -198,4 +198,29 @@ class DeefyRepository {
         
         return $count > 0;
     }
+
+    public function linkPlaylistToUser(int $playlistId, int $userId): void
+    {
+        $stmt = $this->db->prepare("INSERT INTO user2playlist (id_user, id_pl) VALUES (?, ?)");
+        $stmt->execute([$userId, $playlistId]);
+    }
+
+    public function findPlaylistsForUser(int $userId): array
+    {
+        $query = "SELECT p.id, p.nom FROM playlist AS p
+                  JOIN user2playlist AS u2p ON p.id = u2p.id_pl
+                  WHERE u2p.id_user = ?";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->execute([$userId]);
+
+        $playlists = [];
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $playlist = new \iutnc\deefy\audio\lists\PlayList($row['nom']);
+            $playlist->setId($row['id']);
+            $playlists[] = $playlist;
+        }
+        
+        return $playlists;
+    }
 }
