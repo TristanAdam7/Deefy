@@ -6,10 +6,8 @@ use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\auth\AuthnProvider;
 use iutnc\deefy\exception\AuthnException;
 
-class MesPlaylistsAction extends Action
-{
-    public function executeGet(): string
-    {
+class MesPlaylistsAction extends Action {
+    public function executeGet(): string {
         try {
             $user = AuthnProvider::getSignedInUser();
             
@@ -24,8 +22,7 @@ class MesPlaylistsAction extends Action
             $html .= "<ul>";
 
             foreach ($playlists as $pl) {
-                $link = "?action=set-playlist&id={$pl->id}";
-                $html .= "<li><a href=\"{$link}\">{$pl->nom} (ID: {$pl->id})</a></li>";
+                $html .= "<li><a href=\"?action=set-playlist&id={$pl->id}\">{$pl->nom} (ID: {$pl->id})</a></li>";
             }
 
             $html .= "</ul>";
@@ -38,8 +35,7 @@ class MesPlaylistsAction extends Action
         }
     }
 
-    public function executePost(): string 
-    {
+    public function executePost(): string  {
         return $this->executeGet();
     }
 }

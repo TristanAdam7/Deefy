@@ -2,14 +2,14 @@
 
 namespace iutnc\deefy\action;
 
+use iutnc\deefy\audio\lists\Playlist;
+use iutnc\deefy\render\AudioListRenderer;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\auth\Authz;
 use iutnc\deefy\exception\AuthnException;
 
-class SetPlaylistAction extends Action
-{
-    public function executeGet(): string
-    {
+class SetPlaylistAction extends Action {
+    public function executeGet(): string {
         try {
             if (!isset($_GET['id'])) {
                 throw new \Exception("ID de la playlist manquant.");
@@ -27,8 +27,10 @@ class SetPlaylistAction extends Action
             }
 
             $_SESSION['playlist'] = $playlist;
+            $render = new AudioListRenderer($playlist);
+            $html = $render->render();
 
-            $html = "<p>La playlist '{$playlist->nom}' est maintenant votre playlist active.</p>";
+            $html .= "<p>La playlist '{$playlist->nom}' est maintenant votre playlist active.</p>";
             $html .= '<p><a href="?action=add-track">Ajouter une piste à cette playlist</a></p>';
             $html .= '<p><a href="?action=mes-playlists">Retourner à mes playlists</a></p>';
             
