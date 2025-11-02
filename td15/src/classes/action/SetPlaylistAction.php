@@ -26,12 +26,17 @@ class SetPlaylistAction extends Action {
                 throw new \Exception("Playlist non trouvée.");
             }
 
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+
             $_SESSION['playlist'] = $playlist;
             $render = new AudioListRenderer($playlist);
             $html = $render->render();
 
             $html .= "<p>La playlist '{$playlist->nom}' est maintenant votre playlist active.</p>";
-            $html .= '<p><a href="?action=add-track">Ajouter une piste à cette playlist</a></p>';
+            $html .= '<p><a href="?action=add-Podcasttrack">Ajouter un podcast à cette playlist</a></p>';
+            $html .= '<p><a href="?action=add-Albumtrack">Ajouter une piste d\'album à cette playlist</a></p>';
             $html .= '<p><a href="?action=mes-playlists">Retourner à mes playlists</a></p>';
             
             return $html;

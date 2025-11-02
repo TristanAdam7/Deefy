@@ -20,8 +20,10 @@ class AuthnProvider {
             throw new AuthnException("Mot de passe invalide");
         }
 
-        session_start();
-        
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         unset($user['passwd']);
         $_SESSION['user'] = $user;
 
@@ -45,7 +47,9 @@ class AuthnProvider {
 
     public static function getSignedInUser(): array
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
         if (!isset($_SESSION['user'])) {
             throw new AuthnException("Utilisateur non connecté");

@@ -6,7 +6,9 @@ use iutnc\deefy\render\AudioListRenderer;
 class DisplayPlaylistAction extends Action{
 
     public function executeGet(): string{
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
         if (isset($_SESSION['playlist'])) {
             $render = new AudioListRenderer($_SESSION['playlist']);

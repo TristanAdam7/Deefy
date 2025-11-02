@@ -2,6 +2,7 @@
 
 namespace iutnc\deefy\dispatch;
 
+use iutnc\deefy\action\AddAlbumTrackAction;
 use iutnc\deefy\action\AddPlaylistAction;
 use iutnc\deefy\action\AddPodcastTrackAction;
 use iutnc\deefy\action\DefaultAction;
@@ -26,8 +27,12 @@ class Dispatcher {
                 $actionMethode = new AddPlaylistAction();
                 break;
 
-            case 'add-track':
+            case 'add-Podcasttrack':
                 $actionMethode = new AddPodcastTrackAction();
+                break;
+
+            case 'add-Albumtrack':
+                $actionMethode = new AddAlbumTrackAction();
                 break;
 
             case 'playlist':
@@ -82,7 +87,8 @@ class Dispatcher {
                 <nav>
                     <a href="?action=default">Accueil</a>
                     <a href="?action=add-playlist">Créer une playlist</a>
-                    <a href="?action=add-track">Ajouter un podcast</a>
+                    <a href="?action=add-Podcasttrack">Ajouter un podcast</a>
+                    <a href="?action=add-Albumtrack">Ajouter une piste d'album</a>
                     <a href="?action=playlist">Afficher la Playlist en Session</a>
                     <a href="?action=display-playlist-by-id">Voir une playlist (par ID)</a>
                     <a href="?action=mes-playlists">Voir mes Playlists</a>
