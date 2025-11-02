@@ -8,6 +8,7 @@ use iutnc\deefy\exception\AuthnException;
 
 class MesPlaylistsAction extends Action {
     public function executeGet(): string {
+        $html = "<h2>Mes playlists</h2>";
         try {
             $user = AuthnProvider::getSignedInUser();
             
@@ -15,23 +16,21 @@ class MesPlaylistsAction extends Action {
             $playlists = $repo->findPlaylistsForUser((int)$user['id']);
 
             if (empty($playlists)) {
-                return "<h2>Vous n'avez encore aucune playlist.</h2><p><a href='?action=add-playlist'>En créer une ?</a></p>";
+                $html .= "<p>Vous n'avez encore aucune playlist. <a href='?action=add-playlist'>En créer une ?</a></p>";
+                return $html;
             }
-
-            $html = "<h2>Mes playlists (Cliquez pour en faire la playlist active)</h2>";
-            $html .= "<ul>";
 
             foreach ($playlists as $pl) {
-                $html .= "<li><a href=\"?action=set-playlist&id={$pl->id}\">{$pl->nom} (ID: {$pl->id})</a></li>";
+                $html .= "<p><a href=\"?action=set-playlist&id={$pl->id}\" class='cliquable'>{$pl->nom} (ID: {$pl->id})</a></p>";
             }
-
-            $html .= "</ul>";
             return $html;
 
         } catch (AuthnException $e) {
-            return "<p style='color:red;'>Erreur : Vous devez être connecté pour voir vos playlists. <a href='?action=signin'>Se connecter</a></p>";
+            $html .= "<p class='error'>Erreur : Vous devez être connecté pour voir vos playlists. <a href='?action=signin'>Se connecter</a></p>";
+            return $html;
         } catch (\Exception $e) {
-            return "<p>Erreur lors de la récupération des playlists : " . $e->getMessage() . "</p>";
+            $html .= "<p>Erreur lors de la récupération des playlists : " . $e->getMessage() . "</p>";
+            return $html;
         }
     }
 

@@ -40,13 +40,13 @@ class AddUserAction extends Action {
 
             $html = "<h2>Inscription réussie</h2>";
             $html .= "<p>Votre compte pour '$email' a bien été créé.</p>";
-            $html .= '<a href="?action=signin">Se connecter</a>';
+            $html .= '<a href="?action=signin" class="cliquable">Se connecter</a>';
 
             return $html;
 
         } catch (AuthnException $e) {
             $html = $this->executeGet();
-            $html .= "<p style='color:red;'>Échec de l'inscription : " . $e->getMessage() . "</p>";
+            $html .= "<p class='error'>Échec de l'inscription : " . $e->getMessage() . "</p>";
 
             return $html;
         }

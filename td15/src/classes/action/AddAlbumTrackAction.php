@@ -45,7 +45,11 @@ class AddAlbumTrackAction extends Action {
 
             return $html;
         } else {
-            return '<p>Veuillez d\'abord créer une playlist.</p><a href="?action=add-playlist">Créer une playlist</a>';
+            $html = '<h2>Ajouter une nouvelle piste d\'album à la playlist</h2>';
+            $html .= '<p>Veuillez d\'abord créer ou selectionner une playlist.</p>';
+            $html .= '<a href="?action=add-playlist" class="cliquable">Créer une playlist</a><br>';
+            $html .= '<a href="?action=mes-playlists" class="cliquable">Voir mes playlists</a>';
+            return $html;
         }
     }
 
@@ -57,11 +61,11 @@ class AddAlbumTrackAction extends Action {
         $file = $_FILES['fichier'];
 
         if ($file['error'] != 0){
-            return "<p>Erreur lors du transfert du fichier. Code d'erreur : {$file['error']}</p><a href='?action=add-Albumtrack'>Réessayer</a>";
+            return "<p>Erreur lors du transfert du fichier. Code d'erreur : {$file['error']}</p><a href='?action=add-Albumtrack' class='cliquable'>Réessayer</a>";
         }
 
         if ($file['type'] != "audio/mpeg" || substr($file['name'],-4) != '.mp3'){
-           return "<p>Type de fichier non autorisé. Seuls les fichiers MP3 sont acceptés.</p><a href='?action=add-Albumtrack'>Réessayer</a>";
+           return "<p>Type de fichier non autorisé. Seuls les fichiers MP3 sont acceptés.</p><a href='?action=add-Albumtrack' class='cliquable'>Réessayer</a>";
         }
 
         $dest = "audio/" . uniqid('', true) . ".mp3";
@@ -96,10 +100,10 @@ class AddAlbumTrackAction extends Action {
             $html .= "<h3>Voici votre playlist mise à jour :</h3>";
             $html .= $playlistHtml;
 
-            $html .= '<a href="?action=add-Albumtrack">Ajouter encore une piste</a>';
+            $html .= '<a href="?action=add-Albumtrack" class="cliquable">Ajouter encore une piste</a>';
             return $html;
         } else {
-            return "<p>Hum, une erreur est survenue lors de la sauvegarde du fichier.</p><a href='?action=add-Albumtrack'>Réessayer</a>";
+            return "<p>Hum, une erreur est survenue lors de la sauvegarde du fichier.</p><a href='?action=add-Albumtrack' class='cliquable'>Réessayer</a>";
         }
     }
 }

@@ -89,26 +89,25 @@ class Dispatcher {
         <head>
             <meta charset="UTF-8">
             <title>DeefyApp</title>
-            <style>
-                body { font-family: sans-serif; }
-                h1 { text-align: center; }
-                nav { background-color: #f2f2f2; padding: 10px; margin-bottom: 20px; text-align: center; }
-                nav a { margin-right: 15px; text-decoration: none; color: black; }
-            </style>
+            <link rel="stylesheet" href="style.css"/>
         </head>
         <body>
             <header>
                 <h1>DeefyApp</h1>
                 <nav>
-                    <a href="?action=default">Accueil</a>
-                    <a href="?action=add-playlist">Créer une playlist</a>
-                    <a href="?action=add-Podcasttrack">Ajouter un podcast</a>
-                    <a href="?action=add-Albumtrack">Ajouter une piste d'album</a>
-                    <a href="?action=playlist">Afficher la Playlist en Session</a>
-                    <a href="?action=mes-playlists">Voir mes Playlists</a>
-                    <a href="?action=add-user">Inscription</a>
-                    <a href="?action=signin">Se connecter</a>
-                    <a href="?action=logout">Se déconnecter</a>
+                    <div>
+                        <a href="?action=default">Accueil</a>
+                        <a href="?action=add-playlist">Créer une playlist</a>
+                        <a href="?action=add-Podcasttrack">Ajouter un podcast</a>
+                        <a href="?action=add-Albumtrack">Ajouter une piste d'album</a>
+                        <a href="?action=playlist">Afficher la Playlist en Session</a>
+                        <a href="?action=mes-playlists">Voir mes Playlists</a>
+                    </div>
+                    <div>
+                        <a href="?action=add-user">Inscription</a>
+                        <a href="?action=signin">Se connecter</a>
+                        <a href="?action=logout">Se déconnecter</a>
+                    </div>
                     <strong>Utilisateur : {$username}</strong>
                 </nav>
             </header>

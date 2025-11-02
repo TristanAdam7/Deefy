@@ -42,7 +42,7 @@ class DisplayPlaylistByIdAction extends Action {
             return $html;
 
         } catch (AuthnException $e) {
-            return "<p style='color:red;'>Erreur d'autorisation : " . $e->getMessage() . "</p>";
+            return "<p class='error'>Erreur d'autorisation : " . $e->getMessage() . "</p>";
         } catch (Exception $e) {
             return "<p>" . $e->getMessage() . "</p>";
         }

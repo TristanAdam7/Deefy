@@ -43,13 +43,13 @@ class SigninAction extends Action {
             
             AuthnProvider::signin($email, $passwd);
             
-            $html = "<p>Connexion réussie. Vous êtes maintenant connecté.</p>";
+            $html = "<h2>Connexion réussie. Vous êtes maintenant connecté.</h2>";
             
             $html .= '<p><a href="?action=mes-playlists">Voir vos playlists</a> pour en sélectionner une.</p>';
             
         } catch (AuthnException $e) {
             $html = $this->executeGet();
-            $html .= "<p style='color:red;'>Échec de la connexion : " . $e->getMessage() . "</p>";
+            $html .= "<p class='error'>Échec de la connexion : " . $e->getMessage() . "</p>";
         }
         
         return $html;

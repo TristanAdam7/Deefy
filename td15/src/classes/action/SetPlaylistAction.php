@@ -35,16 +35,16 @@ class SetPlaylistAction extends Action {
             $html = $render->render();
 
             $html .= "<p>La playlist '{$playlist->nom}' est maintenant votre playlist active.</p>";
-            $html .= '<p><a href="?action=add-Podcasttrack">Ajouter un podcast à cette playlist</a></p>';
-            $html .= '<p><a href="?action=add-Albumtrack">Ajouter une piste d\'album à cette playlist</a></p>';
-            $html .= '<p><a href="?action=mes-playlists">Retourner à mes playlists</a></p>';
+            $html .= '<p><a href="?action=add-Podcasttrack" class="cliquable">Ajouter un podcast à cette playlist</a></p>';
+            $html .= '<p><a href="?action=add-Albumtrack" class="cliquable">Ajouter une piste d\'album à cette playlist</a></p>';
+            $html .= '<p><a href="?action=mes-playlists" class="cliquable">Retourner à mes playlists</a></p>';
             
             return $html;
 
         } catch (AuthnException $e) {
-            return "<p style='color:red;'>Erreur d'autorisation : " . $e->getMessage() . "</p>";
+            return "<p class='error'>Erreur d'autorisation : " . $e->getMessage() . "</p>";
         } catch (\Exception $e) {
-            return "<p style='color:red;'>Erreur : " . $e->getMessage() . "</p>";
+            return "<p class='error'>Erreur : " . $e->getMessage() . "</p>";
         }
     }
 
