@@ -12,6 +12,7 @@ use iutnc\deefy\action\SignInAction;
 use iutnc\deefy\action\DisplayPlaylistByIdAction;
 use iutnc\deefy\action\MesPlaylistsAction;
 use iutnc\deefy\action\SetPlaylistAction;
+use iutnc\deefy\action\LogoutAction;
 
 class Dispatcher {
 
@@ -45,6 +46,10 @@ class Dispatcher {
 
             case 'signin':
                 $actionMethode = new SigninAction();
+                break;
+
+            case 'logout':
+                $actionMethode = new LogoutAction();
                 break;
 
             case 'mes-playlists':
@@ -94,6 +99,7 @@ class Dispatcher {
                     <a href="?action=mes-playlists">Voir mes Playlists</a>
                     <a href="?action=add-user">Inscription</a>
                     <a href="?action=signin">Se connecter</a>
+                    <a href="?action=logout">Se déconnecter</a>
                 </nav>
             </header>
             <main>
