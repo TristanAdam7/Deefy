@@ -10,6 +10,7 @@ class AuthnProvider {
 
     public static function signin(string $email, string $passwd_clair): void {
         $repo = DeefyRepository::getInstance();
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
         $user = $repo->findUserByEmail($email);
 
         if ($user === null) {
@@ -32,6 +33,7 @@ class AuthnProvider {
 
     public static function register(string $email, string $pass): void {
         $repo = DeefyRepository::getInstance();
+        $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
         if (strlen($pass) < 10) {
             throw new AuthnException("Le mot de passe est trop court (10 caractères minimum).");

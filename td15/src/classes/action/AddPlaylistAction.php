@@ -11,7 +11,6 @@ use iutnc\deefy\exception\AuthnException;
 
 class AddPlaylistAction extends Action {
 
-    // --- CORRECTION : Doit être public ---
     public function executeGet(): string {
         return "
         <form method=\"post\" action=\"?action=add-playlist\">
@@ -21,7 +20,6 @@ class AddPlaylistAction extends Action {
         </form>";
     }
 
-    // --- CORRECTION : Doit être public (C'est la ligne 23) ---
     public function executePost(): string {
         $playlistN = filter_var($_POST['playlist_name'], FILTER_SANITIZE_SPECIAL_CHARS);
 
@@ -39,7 +37,7 @@ class AddPlaylistAction extends Action {
             $userId = (int)$user['id'];
             $repo->linkPlaylistToUser($playlist->id, $userId);
         } catch (AuthnException $e) {
-            
+            return "<p>Erreur lors de l'enregistrement de la playlist, veuillez <a href='?action=add-playlist'>réessayer</a></p>";
         }
 
         $_SESSION['playlist'] = $playlist;

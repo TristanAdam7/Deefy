@@ -12,7 +12,7 @@ class DisplayPlaylistAction extends Action{
 
         if (isset($_SESSION['playlist'])) {
             $render = new AudioListRenderer($_SESSION['playlist']);
-            $html = $render->render(1);
+            $html = $render->render();
         } else {
             $html = "<p>Veuillez d'abord créer ou selectionner une playlist.</p><a href='?action=add-playlist'>Créez-en une !</a>";
         }
