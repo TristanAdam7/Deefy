@@ -1,0 +1,11 @@
+{
+  "name": "iutnc/deefy",
+  "description": "Le logiciel de streaming audio",
+  "type": "project",
+
+  "autoload": {
+    "psr-4": {
+      "iutnc\\deefy\\": "src/classes/"
+    }
+  }
+}

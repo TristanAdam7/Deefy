@@ -1,0 +1,70 @@
+body {
+    font-family: sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+nav {
+    background-color: #f2f2f2;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+nav a {
+    padding: 10px;
+    color: black;
+    transition: 0.25s;
+}
+
+nav a:hover{
+    color : black;
+    background-color: lightgray;
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+    color : steelblue;
+}
+
+a:hover {
+    color: #2a5a79;
+    text-decoration: underline;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.error {
+    color : red;
+}
+
+.cliquable {
+    padding: 10px;
+    color : black;
+    border : lightgray 2px solid;
+    border-radius: 5px;
+    transition: 0.25s;
+}
+
+.cliquable:hover {
+    background-color: lightgray;
+    text-decoration: none;
+    color : black;
+}
+
+form {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    background-color: #f2f2f2;
+    padding: 50px;
+    border-radius: 40px;
+}
