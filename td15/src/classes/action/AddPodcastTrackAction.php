@@ -13,7 +13,7 @@ class AddPodcastTrackAction extends Action {
 
         if (isset($_SESSION['playlist'])) {
             $html = '<h2>Ajouter une nouvelle piste à la playlist</h2>';
-            $html .= '<form method="post" action="?action=add-track" enctype="multipart/form-data">';
+            $html .= '<form method="post" action="?action=add-track">';
             $html .= '<label for="titre">Titre :</label>';
             $html .= '<input type="text" name="titre" required>';
 

@@ -21,8 +21,6 @@ class Dispatcher {
     }
 
     public function run(): void {
-        $html = "";
-
         switch ($this->action) {
             case 'add-playlist':
                 $actionMethode = new AddPlaylistAction();

@@ -5,42 +5,29 @@ namespace iutnc\deefy\auth;
 use iutnc\deefy\repository\DeefyRepository;
 use iutnc\deefy\exception\AuthnException; 
 
-class Authz
-{
+class Authz {
     public const ADMIN_ROLE = 100;
 
-    public static function checkRole(int $expectedRole): void
-    {
-        try {
-            $user = AuthnProvider::getSignedInUser();
-            
-            if ($user['role'] < $expectedRole) {
-                throw new AuthnException("Accès refusé : privilèges insuffisants.");
-            }
+    public static function checkRole(int $expectedRole): void {
+        $user = AuthnProvider::getSignedInUser();
 
-        } catch (AuthnException $e) {
-            throw $e; 
+        if ($user['role'] < $expectedRole) {
+            throw new AuthnException("Accès refusé : privilèges insuffisants.");
         }
     }
 
-    public static function checkPlaylistOwner(int $playlistId): void
-    {
-        try {
-            $user = AuthnProvider::getSignedInUser();
-            
-            if ($user['role'] === self::ADMIN_ROLE) {
-                return; 
-            }
+    public static function checkPlaylistOwner(int $playlistId): void {
+        $user = AuthnProvider::getSignedInUser();
 
-            $repo = DeefyRepository::getInstance();
-            $isOwner = $repo->isPlaylistOwner($playlistId, (int)$user['id']);
+        if ($user['role'] === self::ADMIN_ROLE) {
+            return;
+        }
 
-            if (!$isOwner) {
-                throw new AuthnException("Accès refusé : vous n'êtes pas le propriétaire de cette playlist.");
-            }
+        $repo = DeefyRepository::getInstance();
+        $isOwner = $repo->isPlaylistOwner($playlistId, (int)$user['id']);
 
-        } catch (AuthnException $e) {
-            throw $e;
+        if (!$isOwner) {
+            throw new AuthnException("Accès refusé : vous n'êtes pas le propriétaire de cette playlist.");
         }
     }
 }

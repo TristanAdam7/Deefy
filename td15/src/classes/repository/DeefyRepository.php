@@ -120,35 +120,25 @@ class DeefyRepository {
         return $stmt->execute([$email, $hash, 1]);
     }
 
-    public function findTrackById(int $id): ?\iutnc\deefy\audio\tracks\AudioTrack
+    public function findTrackById(int $id): ?AudioTrack
     {
         $stmt = $this->db->prepare("SELECT * FROM track WHERE id = ?");
         $stmt->execute([$id]);
-        $data = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$data) { 
             return null; 
         }
 
-        $track = null;
-
         if ($data['type'] === 'A') {
-            $track = new \iutnc\deefy\audio\tracks\AlbumTrack(
-                $data['titre'], 
-                $data['filename'], 
-                $data['titre_album'], 
-                (int)$data['numero_album']
-            );
+            $track = new AlbumTrack($data['titre'], $data['filename'], $data['titre_album'], (int)$data['numero_album']);
             $track->setArtiste($data['artiste_album']);
             $track->setAnnee((int)$data['annee_album']);
 
         } elseif ($data['type'] === 'P') {
-            $track = new \iutnc\deefy\audio\tracks\PodcastTrack(
-                $data['titre'], 
-                $data['filename'],
-                $data['auteur_podcast'],
-                $data['date_posdcast'] 
-            );
+            $track = new PodcastTrack($data['titre'], $data['filename']);
+            $track->setAuteur($data['auteur_podcast']);
+            $track->setDate($data['date_posdcast']);
         } else {
             return null; 
         }
@@ -160,25 +150,25 @@ class DeefyRepository {
         return $track;
     }
 
-    public function findPlaylistById(int $id): ?\iutnc\deefy\audio\lists\PlayList
+    public function findPlaylistById(int $id): ?PlayList
     {
         $stmt_pl = $this->db->prepare("SELECT id, nom FROM playlist WHERE id = ?");
         $stmt_pl->execute([$id]);
-        $data = $stmt_pl->fetch(\PDO::FETCH_ASSOC);
+        $data = $stmt_pl->fetch(PDO::FETCH_ASSOC);
 
         if (!$data) {
             return null;
         }
 
-        $playlist = new \iutnc\deefy\audio\lists\PlayList($data['nom']);
+        $playlist = new PlayList($data['nom']);
         $playlist->setId($data['id']);
 
         $stmt_tracks = $this->db->prepare("SELECT id_track FROM playlist2track WHERE id_pl = ? ORDER BY no_piste_dans_liste ASC");
         $stmt_tracks->execute([$id]);
 
-        while ($track_data = $stmt_tracks->fetch(\PDO::FETCH_ASSOC)) {
+        while ($track_data = $stmt_tracks->fetch(PDO::FETCH_ASSOC)) {
             $trackObject = $this->findTrackById((int)$track_data['id_track']); 
-            if ($trackObject instanceof \iutnc\deefy\audio\tracks\AudioTrack) {
+            if ($trackObject instanceof AudioTrack) {
                 $playlist->ajouterPiste($trackObject);
             }
         }
@@ -188,10 +178,7 @@ class DeefyRepository {
 
     public function isPlaylistOwner(int $playlistId, int $userId): bool
     {
-        $query = "SELECT COUNT(*) FROM user2playlist 
-                  WHERE id_pl = ? AND id_user = ?";
-        
-        $stmt = $this->db->prepare($query);
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM user2playlist WHERE id_pl = ? AND id_user = ?");
         $stmt->execute([$playlistId, $userId]);
         
         $count = (int)$stmt->fetchColumn();
@@ -207,16 +194,12 @@ class DeefyRepository {
 
     public function findPlaylistsForUser(int $userId): array
     {
-        $query = "SELECT p.id, p.nom FROM playlist AS p
-                  JOIN user2playlist AS u2p ON p.id = u2p.id_pl
-                  WHERE u2p.id_user = ?";
-        
-        $stmt = $this->db->prepare($query);
+        $stmt = $this->db->prepare("SELECT p.id, p.nom FROM playlist AS p INNER JOIN user2playlist AS u2p ON p.id = u2p.id_pl WHERE u2p.id_user = ?");
         $stmt->execute([$userId]);
 
         $playlists = [];
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $playlist = new \iutnc\deefy\audio\lists\PlayList($row['nom']);
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $playlist = new PlayList($row['nom']);
             $playlist->setId($row['id']);
             $playlists[] = $playlist;
         }
