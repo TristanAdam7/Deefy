@@ -73,6 +73,16 @@ class Dispatcher {
     }
 
     private function renderPage(string $html): void {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (isset($_SESSION['user'])) {
+            $username = $_SESSION["user"]["email"];
+        } else {
+            $username = "Pas connecté";
+        }
+
         $affichage = <<<HTML
         <!DOCTYPE html>
         <html lang="fr">
@@ -83,7 +93,7 @@ class Dispatcher {
                 body { font-family: sans-serif; }
                 h1 { text-align: center; }
                 nav { background-color: #f2f2f2; padding: 10px; margin-bottom: 20px; text-align: center; }
-                nav a { margin-right: 15px; text-decoration: none; color: #333; }
+                nav a { margin-right: 15px; text-decoration: none; color: black; }
             </style>
         </head>
         <body>
@@ -95,11 +105,11 @@ class Dispatcher {
                     <a href="?action=add-Podcasttrack">Ajouter un podcast</a>
                     <a href="?action=add-Albumtrack">Ajouter une piste d'album</a>
                     <a href="?action=playlist">Afficher la Playlist en Session</a>
-                    <a href="?action=display-playlist-by-id">Voir une playlist (par ID)</a>
                     <a href="?action=mes-playlists">Voir mes Playlists</a>
                     <a href="?action=add-user">Inscription</a>
                     <a href="?action=signin">Se connecter</a>
                     <a href="?action=logout">Se déconnecter</a>
+                    <strong>Utilisateur : {$username}</strong>
                 </nav>
             </header>
             <main>
