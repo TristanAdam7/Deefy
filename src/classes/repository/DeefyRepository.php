@@ -4,7 +4,7 @@ namespace iutnc\deefy\repository;
 
 use iutnc\deefy\audio\tracks\AudioTrack;
 use \PDO;
-use iutnc\deefy\audio\lists\PlayList;
+use iutnc\deefy\audio\lists\Playlist;
 use iutnc\deefy\audio\tracks\AlbumTrack;
 use iutnc\deefy\audio\tracks\PodcastTrack;
 
@@ -150,7 +150,7 @@ class DeefyRepository {
         return $track;
     }
 
-    public function findPlaylistById(int $id): ?PlayList
+    public function findPlaylistById(int $id): ?Playlist
     {
         $stmt_pl = $this->db->prepare("SELECT id, nom FROM playlist WHERE id = ?");
         $stmt_pl->execute([$id]);
@@ -160,7 +160,7 @@ class DeefyRepository {
             return null;
         }
 
-        $playlist = new PlayList($data['nom']);
+        $playlist = new Playlist($data['nom']);
         $playlist->setId($data['id']);
 
         $stmt_tracks = $this->db->prepare("SELECT id_track FROM playlist2track WHERE id_pl = ? ORDER BY no_piste_dans_liste ASC");
@@ -199,7 +199,7 @@ class DeefyRepository {
 
         $playlists = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $playlist = new PlayList($row['nom']);
+            $playlist = new Playlist($row['nom']);
             $playlist->setId($row['id']);
             $playlists[] = $playlist;
         }
